@@ -1,0 +1,32 @@
+.toggle-container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    background: #eff6ff;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.toggle-container button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    color: #2563eb;
+    font-size: 13px;
+
+    transition: all 0.2s ease;
+}
+
+.toggle-container button:hover {
+    background: #dbeafe;
+}
+
+.toggle-container button.active {
+    background: linear-gradient(to right, #2563eb, #3b82f6);
+    color: white;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}

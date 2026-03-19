@@ -1,0 +1,11 @@
+.logo-container {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+}
+
+.logo-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
