@@ -10,7 +10,6 @@ export default function LoginPage() {
     return (
         <div className="page">
             <div className="login-wrapper">
-
                 <div className="header">
                     <div className="header-main">
                         <ChronoCareLogo className="logo-inline" />

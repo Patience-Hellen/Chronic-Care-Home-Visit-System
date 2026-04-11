@@ -31,7 +31,7 @@ export default function LoginForm({ userType }) {
             <button
                 className="login-btn"
                 onClick={() =>
-                    navigate(userType === 'patient' ? '/patient' : '/provider')
+                    navigate(userType === 'patient' ? '/setup-profile' : '/provider')
                 }
             >
                 LOGIN
