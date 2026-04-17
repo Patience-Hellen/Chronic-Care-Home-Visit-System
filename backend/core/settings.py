@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     'readings',
     'alerts',
     'visits',
-    'monitoring',
 ]
 
 MIDDLEWARE = [
