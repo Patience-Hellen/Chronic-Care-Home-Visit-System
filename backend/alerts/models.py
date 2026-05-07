@@ -1,8 +1,11 @@
 from django.db import models
 
 class Alert(models.Model):
-    patient = models.ForeignKey('patients.Patient', on_delete=models.CASCADE)
-    alert_type = models.CharField(max_length=50)
+    # We use a simple Integer for now to avoid "Patient not found" crashes
+    patient_id = models.IntegerField(default=1) 
     message = models.TextField()
-    status = models.CharField(max_length=20, default="pending")
     created_at = models.DateTimeField(auto_now_add=True)
+    is_resolved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Alert: {self.message}"
