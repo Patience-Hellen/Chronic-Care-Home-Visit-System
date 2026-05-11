@@ -2,7 +2,7 @@ import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export default function PatientView({ data, onManualInput, onSync }) {
-    
+
     // 1. PROCESS DATA: We need a format where each point can have both BP and Glucose
     // Clinical systems usually "pivot" data so lines don't break.
     const chartData = [...data.history].reverse().map(item => ({
@@ -18,7 +18,7 @@ export default function PatientView({ data, onManualInput, onSync }) {
             {/* --- PAGE HEADER --- */}
             <header className="page-header">
                 <div style={{ fontWeight: '800', fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center' }}>
-                    ACTIVE ALERTS: 
+                    ACTIVE ALERTS:
                     <span className="alert-pill" style={{ marginLeft: '10px' }}>
                         {data.alerts?.length || 0}
                     </span>
@@ -73,7 +73,7 @@ export default function PatientView({ data, onManualInput, onSync }) {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div className="chart-container">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
@@ -87,70 +87,86 @@ export default function PatientView({ data, onManualInput, onSync }) {
                                         <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                
+
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                                
-                                <XAxis 
-                                    dataKey="date" 
-                                    axisLine={false} 
-                                    tickLine={false} 
-                                    tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 700 }} 
-                                    dy={10} 
+
+                                <XAxis
+                                    dataKey="date"
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 700 }}
+                                    dy={10}
                                 />
-                                
+
                                 {/* LEFT Y-AXIS: Blood Pressure */}
-                                <YAxis 
+                                <YAxis
                                     yAxisId="left"
                                     orientation="left"
                                     domain={[0, 220]}
-                                    axisLine={false} 
-                                    tickLine={false} 
-                                    tick={{ fontSize: 10, fill: '#2563eb', fontWeight: 700 }} 
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fontSize: 10, fill: '#2563eb', fontWeight: 700 }}
                                     label={{ value: 'BP (mmHg)', angle: -90, position: 'insideLeft', fontSize: 10, fill: '#2563eb', fontWeight: 800 }}
                                 />
 
                                 {/* RIGHT Y-AXIS: Glucose */}
-                                <YAxis 
+                                <YAxis
                                     yAxisId="right"
                                     orientation="right"
                                     domain={[0, 20]}
-                                    axisLine={false} 
-                                    tickLine={false} 
-                                    tick={{ fontSize: 10, fill: '#10b981', fontWeight: 700 }} 
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fontSize: 10, fill: '#10b981', fontWeight: 700 }}
                                     label={{ value: 'GLUCOSE (mmol/L)', angle: 90, position: 'insideRight', fontSize: 10, fill: '#10b981', fontWeight: 800 }}
                                 />
-                                
-                                <Tooltip 
-                                    contentStyle={{ 
-                                        borderRadius: '12px', 
-                                        border: 'none', 
+
+                                <Tooltip
+                                    contentStyle={{
+                                        borderRadius: '12px',
+                                        border: 'none',
                                         boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)',
-                                        fontSize: '12px' 
-                                    }} 
+                                        fontSize: '12px'
+                                    }}
                                     connectNulls={true} // Important: keeps the line continuous even if values are mixed
                                 />
-                                
+
+
+
                                 {/* LINE 1: HYPERTENSION */}
-                                <Area 
+                                <Area
                                     yAxisId="left"
-                                    type="monotone" 
-                                    dataKey="hypertension" 
-                                    stroke="#2563eb" 
-                                    strokeWidth={3} 
-                                    fillOpacity={1} 
-                                    fill="url(#colorBP)" 
+                                    type="monotone"
+                                    dataKey="hypertension"
+                                    stroke="#2563eb"
+                                    dot={true}           /* <--- ADD THIS */
+                                    activeDot={{ r: 6 }}  /* <--- ADD THIS for hover effect */
+                                    fillOpacity={1}
+                                    fill="url(#colorBP)"
                                     connectNulls={true}
                                 />
 
                                 {/* LINE 2: GLUCOSE */}
-                                <Area 
+                                <Area
                                     yAxisId="right"
-                                    type="monotone" 
-                                    dataKey="glucose" 
-                                    stroke="#10b981" 
-                                    strokeWidth={3} 
-                                    fillOpacity={1} 
-                                    fill="url(#colorGlucose)" 
+                                    type="monotone"
+                                    dataKey="glucose"
+                                    stroke="#10b981"
+                                    dot={true}           /* <--- ADD THIS */
+                                    activeDot={{ r: 6 }}
+                                    fillOpacity={1}
+                                    fill="url(#colorGlucose)"
+                                    connectNulls={true}
+                                />
+
+                                {/* LINE 2: GLUCOSE */}
+                                <Area
+                                    yAxisId="right"
+                                    type="monotone"
+                                    dataKey="glucose"
+                                    stroke="#10b981"
+                                    strokeWidth={3}
+                                    fillOpacity={1}
+                                    fill="url(#colorGlucose)"
                                     connectNulls={true}
                                 />
                             </AreaChart>

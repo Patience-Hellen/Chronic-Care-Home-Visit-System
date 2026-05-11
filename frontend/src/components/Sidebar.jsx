@@ -11,28 +11,17 @@ import {
 
 export default function Sidebar({ role, activeTab, setActiveTab, onLogout, alertCount }) {
     
-    // This object defines what each user role sees in their sidebar
     const menuItems = {
-        // 1. PATIENT MENU
         patient: [
             { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18}/> },
             { id: 'monitoring', label: 'My Monitoring', icon: <Activity size={18}/> },
             { id: 'profile', label: 'My Profile', icon: <User size={18}/> }
         ],
-
-        // 2. DOCTOR MENU
         doctor: [
-            { 
-                id: 'dashboard', 
-                label: 'Dashboard', 
-                icon: <LayoutDashboard size={18}/>,
-                hasAlerts: true // This flag tells the code to show the red badge here
-            },
+            { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18}/>, hasAlerts: true },
             { id: 'registry', label: 'Patient Registry', icon: <Users size={18}/> },
             { id: 'chw', label: 'CHW Coordination', icon: <Map size={18}/> }
         ],
-
-        // 3. CHW MENU
         chw: [
             { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18}/> },
             { id: 'schedule', label: 'My Schedule', icon: <Calendar size={18}/> },
@@ -48,7 +37,6 @@ export default function Sidebar({ role, activeTab, setActiveTab, onLogout, alert
             </div>
             
             <nav style={{ flex: 1 }}>
-                {/* Look up the list based on the user's role */}
                 {menuItems[role]?.map(item => (
                     <div 
                         key={item.id}
@@ -60,7 +48,7 @@ export default function Sidebar({ role, activeTab, setActiveTab, onLogout, alert
                             <span>{item.label}</span>
                         </div>
 
-                        {/* DOCTOR ALERT BADGE: Shows if there are active alerts in the system */}
+                        {/* DOCTOR ALERT BADGE: Now correctly using the alertCount prop */}
                         {role === 'doctor' && item.hasAlerts && alertCount > 0 && (
                             <span className="nav-alert-badge">{alertCount}</span>
                         )}

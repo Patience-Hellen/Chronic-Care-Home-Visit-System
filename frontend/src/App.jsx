@@ -15,108 +15,77 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showModal, setShowModal] = useState(false);
-
-  // --- SOURCE OF TRUTH (Local State for smooth demo) ---
-  const [history, setHistory] = useState([
-    { id: 1, date: 'MAY 04', metric: 'BLOOD PRESSURE', val: '120/80', type: 'bp' }
-  ]);
+  const [history, setHistory] = useState([]);
   const [alerts, setAlerts] = useState([]); 
   const [visits, setVisits] = useState([]);
 
-  // 1. REFRESH ENGINE (Tries backend, stays local if fails)
-  const refreshData = async () => {
+  const syncSystemState = async () => {
     if (!user) return;
     try {
       const vRes = await fetch(`${BASE_URL}/visits/`);
-      if (vRes.ok) {
-          const vData = await vRes.json();
-          setAlerts(vData.alerts || []);
-          setVisits(vData.visits || []);
-      }
-      
+      const vData = await vRes.json();
+      setAlerts(vData.alerts || []);
+      setVisits(vData.visits || []);
+
       const rRes = await fetch(`${BASE_URL}/readings/`);
-      if (rRes.ok) {
-          const rData = await rRes.json();
-          setHistory(rData);
-      }
+      const rData = await rRes.json();
+      if (Array.isArray(rData)) setHistory(rData);
     } catch (err) {
-      console.warn("Backend offline - Using local simulation mode.");
+      console.error("Connection lost to Django Backend.");
     }
   };
 
   useEffect(() => {
-    refreshData();
-    const interval = setInterval(refreshData, 5000);
+    syncSystemState();
+    const interval = setInterval(syncSystemState, 5000);
     return () => clearInterval(interval);
   }, [user]);
 
-  // 2. LOGIC: Patient Submits
   const handlePatientSubmit = async (formData) => {
-    const newVal = formData.type === 'hypertension' ? `${formData.systolic}/${formData.diastolic}` : formData.glucose;
-    
-    // Create local entry immediately so the UI updates even without backend
-    const localEntry = {
-      id: Date.now(),
-      date: 'MAY 07',
-      metric: formData.type === 'hypertension' ? 'BLOOD PRESSURE' : 'BLOOD GLUCOSE',
-      val: newVal,
-      type: formData.type === 'hypertension' ? 'bp' : 'glucose'
-    };
+    try {
+      const response = await fetch(`${BASE_URL}/readings/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData) 
+      });
 
-    setHistory([localEntry, ...history]);
+      const result = await response.json();
 
-    // Check for alerts locally for the demo
-    if (parseInt(formData.systolic) >= 180 || parseFloat(formData.glucose) >= 15) {
-      const newAlert = { id: Date.now(), patient: "Waweru Kimani", msg: `Critical ${localEntry.metric}: ${newVal}` };
-      setAlerts([newAlert, ...alerts]);
-      
-      if (formData.symptoms?.length > 0 && formData.type === 'hypertension') {
-          alert("⚠️ EMERGENCY: Signs of Hypertensive Crisis/Stroke detected. Seek medical care.");
+      // If the backend returned a 400 (Illogical value rejection)
+      if (!response.ok) {
+          alert(result.message || "Invalid Input detected by clinical engine.");
+          return; // STOP HERE, don't close modal
       }
+
+      // Success
+      if (result.advisory) alert(result.advisory);
+      setShowModal(false);
+      await syncSystemState(); 
+    } catch (err) {
+      alert("Submission Error: Backend not responding.");
     }
-
-    // Try to save to backend in background
-    fetch(`${BASE_URL}/readings//`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    }).catch(() => console.log("Silent fail: Saving locally only."));
-
-    setShowModal(false);
   };
 
-  // 3. LOGIC: Doctor Dispatches
   const handleDoctorDispatch = async (alertId, chwName, patientName) => {
-    const newVisit = {
-      id: Date.now(),
-      patient: patientName,
-      chw: chwName,
-      status: 'SCHEDULED',
-      date: 'MAY 07',
-      reason: 'Critical Vital Review'
-    };
-
-    // Update locally for the demo
-    setVisits([newVisit, ...visits]);
-    setAlerts(alerts.filter(a => a.id !== alertId));
-
-    // Try backend
-    fetch(`${BASE_URL}/visits/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'dispatch', alert_id: alertId, chw_name: chwName, patient_name: patientName })
-    }).catch(() => {});
+    try {
+      await fetch(`${BASE_URL}/visits/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'dispatch', alert_id: alertId, chw_name: chwName, patient_name: patientName })
+      });
+      await syncSystemState(); 
+    } catch (err) { console.error(err); }
   };
 
-  // 4. LOGIC: CHW Saves
   const handleCHWComplete = async (visitId, notes, outcome) => {
-    setVisits(visits.map(v => v.id === visitId ? { ...v, status: 'VERIFIED', outcome: notes } : v));
-
-    fetch(`${BASE_URL}/visits/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'complete', visit_id: visitId, notes: notes })
-    }).catch(() => {});
+    try {
+      await fetch(`${BASE_URL}/visits/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'complete', visit_id: visitId, notes: notes })
+      });
+      await syncSystemState(); 
+    } catch (err) { console.error(err); }
   };
 
   if (!user) return <RoleSelect onSelect={(role) => { setUser({ role }); setActiveTab('dashboard'); }} />;
@@ -133,10 +102,15 @@ export default function App() {
         {user.role === 'patient' && (
           <>
             {activeTab === 'dashboard' && (
-              <PatientView 
-                data={{ history, alerts: alerts.map(a => a.msg), latestBP: history.find(h=>h.type==='bp')?.val || '0/0', latestGlucose: history.find(h=>h.type==='glucose')?.val || '0' }} 
+              <PatientView
+                data={{
+                  history: history,
+                  alerts: alerts.map(a => a.msg || a.message),
+                  latestBP: history.find(h => h.type === 'bp')?.val || '0/0',
+                  latestGlucose: history.find(h => h.type === 'glucose')?.val || '0'
+                }}
                 onManualInput={() => setShowModal(true)}
-                onSync={() => handlePatientSubmit({type: 'hypertension', systolic: 195, diastolic: 105, symptoms: ['Dizziness']})}
+                onSync={() => handlePatientSubmit({ type: 'hypertension', systolic: 195, diastolic: 105, symptoms: ['Dizziness'] })}
               />
             )}
             {activeTab === 'monitoring' && <MonitoringLog data={history} onManualInput={() => setShowModal(true)} />}

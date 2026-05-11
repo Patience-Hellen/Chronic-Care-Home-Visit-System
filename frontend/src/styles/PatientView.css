@@ -1,67 +1,113 @@
 /* --- TOP STATS GRID (Fixes the vertical stacking) --- */
-.stats-grid { 
-    display: grid; 
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 20px; 
-    padding: 32px; 
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 32px;
 }
 
-.glass-card { 
-    background: white; 
-    padding: 24px; 
-    border-radius: 12px; 
-    border: 1px solid #e2e8f0; 
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+.glass-card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-.stat-card { text-align: center; display: flex; flex-direction: column; justify-content: center; }
-.stat-label { font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
-.stat-val { font-size: 32px; font-weight: 800; margin: 8px 0; color: #0f172a; }
-.stat-sub { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #10b981; }
+.stat-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-val {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 8px 0;
+    color: #0f172a;
+}
+
+.stat-sub {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #10b981;
+}
 
 /* --- BUTTONS & CRAMPING FIX --- */
 .action-group {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Separates the two buttons nicely */
+    gap: 10px;
+    /* Separates the two buttons nicely */
 }
 
-.btn-primary { 
-    background: #2563eb; color: white; border: none; padding: 12px; 
-    border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; 
-    text-transform: uppercase; width: 100%;
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    width: 100%;
 }
 
 .btn-sync {
-    background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; 
-    padding: 10px; border-radius: 8px; font-weight: 800; font-size: 10px; 
-    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: #f8fafc;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 /* --- MAIN DASHBOARD CONTENT (Graph | Records) --- */
-.dashboard-grid { 
-    display: grid; 
+.dashboard-grid {
+    display: grid;
     /* Give the sidebar a bit more room (30% instead of 33% fixed) */
-    grid-template-columns: 1fr 340px; 
-    gap: 24px; 
-    padding: 0 32px 32px; 
-    align-items: start; 
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    padding: 0 32px 32px;
+    align-items: start;
 }
 
-.chart-container { height: 320px; width: 100%; margin-top: 20px; }
+.chart-container {
+    height: 320px;
+    width: 100%;
+    margin-top: 20px;
+}
 
-.records-container { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 10px; 
+.records-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .record-card-styled {
-    background: #f8fafc; 
-    padding: 14px 18px; /* Slightly tighter vertical, wider horizontal */
-    border-radius: 12px; 
-    display: flex; 
-    justify-content: space-between; 
+    background: #f8fafc;
+    padding: 14px 18px;
+    /* Slightly tighter vertical, wider horizontal */
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     border: 1px solid #f1f5f9;
     transition: transform 0.2s;
@@ -78,37 +124,38 @@
     gap: 3px;
 }
 
-.record-label-group b { 
-    font-size: 11px; 
-    color: #475569; 
+.record-label-group b {
+    font-size: 11px;
+    color: #475569;
     text-transform: uppercase;
     letter-spacing: 0.3px;
 }
 
-.record-label-group span { 
-    font-size: 10px; 
-    color: #94a3b8; 
+.record-label-group span {
+    font-size: 10px;
+    color: #94a3b8;
     font-weight: 500;
 }
 
-.record-value-bold { 
-    font-size: 16px; /* Reduced from 18px to stop crowding */
-    font-weight: 800; 
+.record-value-bold {
+    font-size: 16px;
+    /* Reduced from 18px to stop crowding */
+    font-weight: 800;
     min-width: 60px;
     text-align: right;
 }
 
 .alert-item-critical {
-    background: #fef2f2; 
-    border-left: 4px solid #ef4444; 
-    padding: 12px 14px; 
-    border-radius: 10px; 
-    margin-bottom: 15px; 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    color: #b91c1c; 
-    font-size: 10px; 
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #b91c1c;
+    font-size: 10px;
     font-weight: 800;
     line-height: 1.3;
 }
@@ -156,93 +203,204 @@
 /* ============================================================
    3. CLINICAL MONITORING LOG (The Table)
    ============================================================ */
-.monitoring-log-card { 
-    background: white; 
-    border-radius: 16px; 
-    border: 1px solid var(--border); 
-    margin: 32px; 
-    overflow: hidden; 
+.monitoring-log-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    margin: 32px;
+    overflow: hidden;
 }
 
-.log-header-row { 
-    padding: 24px 32px; 
-    border-bottom: 1px solid var(--border); 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
+.log-header-row {
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.log-table-main { 
-    width: 100%; 
-    border-collapse: collapse; 
-    text-align: left; 
+.log-table-main {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
 }
 
-.log-table-main th { 
-    padding: 16px 32px; 
-    font-size: 11px; 
-    font-weight: 800; 
-    color: #94a3b8; 
-    text-transform: uppercase; 
-    background: #fcfcfc; 
-    border-bottom: 1px solid #f1f5f9; 
+.log-table-main th {
+    padding: 16px 32px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    background: #fcfcfc;
+    border-bottom: 1px solid #f1f5f9;
 }
 
-.log-table-main td { 
-    padding: 22px 32px; 
-    border-bottom: 1px solid #f1f5f9; 
-    font-size: 14px; 
+.log-table-main td {
+    padding: 22px 32px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
 }
 
-.log-metric-cell { 
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
-    font-weight: 800; 
-    font-size: 12px; 
-    color: #475569; 
+.log-metric-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+    font-size: 12px;
+    color: #475569;
 }
 
-.tag-verified { 
-    background: #dcfce7; 
-    color: #10b981; 
-    padding: 4px 12px; 
-    border-radius: 6px; 
-    font-size: 10px; 
-    font-weight: 800; 
+.tag-verified {
+    background: #dcfce7;
+    color: #10b981;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.validation-error-box {
+    background: #fef2f2;
+    border: 1px solid #fee2e2;
+    color: #b91c1c;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 700;
 }
 
 /* ============================================================
    4. DATA SUBMISSION MODAL (The Pop-up)
    ============================================================ */
 .modal-overlay {
-    position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7);
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-    display: flex; align-items: center; justify-content: center; z-index: 2000;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.7);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
 }
 
 .clinical-modal {
-    background: white; width: 100%; max-width: 520px; border-radius: 24px; padding: 40px;
+    background: white;
+    width: 100%;
+    max-width: 520px;
+    border-radius: 24px;
+    padding: 40px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.modal-header h3 { margin: 0; font-size: 18px; font-weight: 800; text-transform: uppercase; }
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
 
-.modal-tabs { display: flex; background: #f1f5f9; padding: 6px; border-radius: 12px; margin-bottom: 24px; }
-.m-tab { flex: 1; padding: 12px; border: none; background: transparent; border-radius: 8px; font-size: 11px; font-weight: 800; color: #64748b; cursor: pointer; }
-.m-tab.active { background: white; color: #2563eb; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
 
-.modal-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.modal-field-group { margin-bottom: 20px; }
-.modal-field-group label { display: block; font-size: 11px; font-weight: 800; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
-.modal-input { width: 100%; padding: 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 15px; outline: none; box-sizing: border-box; }
+.modal-tabs {
+    display: flex;
+    background: #f1f5f9;
+    padding: 6px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
 
-.symptom-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.symptom-pill { padding: 10px 14px; border-radius: 10px; border: 1px solid #e2e8f0; background: white; font-size: 11px; font-weight: 700; color: #64748b; cursor: pointer; }
-.symptom-pill.active { border-color: #ef4444; background: #fef2f2; color: #ef4444; }
+.m-tab {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.m-tab.active {
+    background: white;
+    color: #2563eb;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.modal-input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.modal-field-group {
+    margin-bottom: 20px;
+}
+
+.modal-field-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.symptom-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.symptom-pill {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.symptom-pill.active {
+    border-color: #ef4444;
+    background: #fef2f2;
+    color: #ef4444;
+}
 
 .btn-log {
-    width: 100%; padding: 18px; background: #2563eb; color: white; border: none; border-radius: 14px;
-    font-size: 14px; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top: 20px;
+    width: 100%;
+    padding: 18px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 20px;
 }

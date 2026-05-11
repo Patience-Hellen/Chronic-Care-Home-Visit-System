@@ -18,8 +18,8 @@ export default function RoleSelect({ onSelect }) {
                 <div className="auth-card-fixed">
                     <div className="auth-logo-box"></div>
                     <h1 className="auth-title">CareLink Kenya</h1>
-                    <p className="auth-sub">Chronic Care Coordination Prototype</p>
-                    
+                    <p className="auth-sub">Chronic Care Coordination</p>
+                
                     <p className="auth-menu-label">SELECT ACCESS ROLE</p>
                     <div className="auth-role-list">
                         {roles.map(r => (
@@ -42,7 +42,7 @@ export default function RoleSelect({ onSelect }) {
             <div className="auth-card-fixed">
                 <div className="auth-logo-box"></div>
                 <h1 className="auth-title">CareLink Kenya</h1>
-                <p className="auth-sub">Chronic Care Coordination Prototype</p>
+                <p className="auth-sub">Chronic Care Coordination</p>
                 
                 <div className="auth-input-group">
                     <label className="auth-label">ACCESS ROLE</label>
