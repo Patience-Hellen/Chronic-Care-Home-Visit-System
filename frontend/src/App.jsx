@@ -7,6 +7,7 @@ import MonitoringLog from './pages/MonitoringLog';
 import PatientView from './pages/PatientView';
 import ProfileView from './pages/ProfileView';
 import RoleSelect from './pages/RoleSelect';
+import { clinicalService } from './services/api'; // <--- ADD THIS LINE
 import './styles/Dashboard.css';
 
 const BASE_URL = 'http://127.0.0.1:8000/api';
@@ -16,7 +17,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showModal, setShowModal] = useState(false);
   const [history, setHistory] = useState([]);
-  const [alerts, setAlerts] = useState([]); 
+  const [alerts, setAlerts] = useState([]);
   const [visits, setVisits] = useState([]);
 
   const syncSystemState = async () => {
@@ -46,21 +47,21 @@ export default function App() {
       const response = await fetch(`${BASE_URL}/readings/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData) 
+        body: JSON.stringify(formData)
       });
 
       const result = await response.json();
 
       // If the backend returned a 400 (Illogical value rejection)
       if (!response.ok) {
-          alert(result.message || "Invalid Input detected by clinical engine.");
-          return; // STOP HERE, don't close modal
+        alert(result.message || "Invalid Input detected by clinical engine.");
+        return; // STOP HERE, don't close modal
       }
 
       // Success
       if (result.advisory) alert(result.advisory);
       setShowModal(false);
-      await syncSystemState(); 
+      await syncSystemState();
     } catch (err) {
       alert("Submission Error: Backend not responding.");
     }
@@ -73,7 +74,7 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'dispatch', alert_id: alertId, chw_name: chwName, patient_name: patientName })
       });
-      await syncSystemState(); 
+      await syncSystemState();
     } catch (err) { console.error(err); }
   };
 
@@ -84,7 +85,7 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'complete', visit_id: visitId, notes: notes })
       });
-      await syncSystemState(); 
+      await syncSystemState();
     } catch (err) { console.error(err); }
   };
 
@@ -110,7 +111,10 @@ export default function App() {
                   latestGlucose: history.find(h => h.type === 'glucose')?.val || '0'
                 }}
                 onManualInput={() => setShowModal(true)}
-                onSync={() => handlePatientSubmit({ type: 'hypertension', systolic: 195, diastolic: 105, symptoms: ['Dizziness'] })}
+                onSync={async () => {
+                  const deviceData = await clinicalService.syncDeviceData();
+                  handlePatientSubmit(deviceData);
+                }}
               />
             )}
             {activeTab === 'monitoring' && <MonitoringLog data={history} onManualInput={() => setShowModal(true)} />}
