@@ -10,7 +10,7 @@ import RoleSelect from './pages/RoleSelect';
 import { clinicalService } from './services/api'; // <--- ADD THIS LINE
 import './styles/Dashboard.css';
 
-const BASE_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
 
 export default function App() {
   const [user, setUser] = useState(null);
